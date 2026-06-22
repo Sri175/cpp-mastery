@@ -1,0 +1,1275 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);background:transparent}
+.root{padding:1rem 0}
+.header{margin-bottom:1.5rem}
+.header h1{font-size:20px;font-weight:500;margin-bottom:4px}
+.header p{font-size:13px;color:var(--color-text-secondary)}
+.phase-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.ptab{padding:5px 12px;border-radius:99px;border:0.5px solid var(--color-border-secondary);font-size:12px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s}
+.ptab.active{background:#3C3489;color:#EEEDFE;border-color:#3C3489}
+.nav-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem}
+.nav-row button{padding:5px 14px;font-size:13px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary)}
+.nav-row button:hover{background:var(--color-background-secondary)}
+.day-badge{font-size:13px;color:var(--color-text-secondary);flex:1;text-align:center}
+.day-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.day-header{padding:1rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.day-header .day-num{font-size:11px;font-weight:500;color:#7F77DD;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.day-header h2{font-size:17px;font-weight:500;margin-bottom:4px}
+.day-header .meta{display:flex;gap:12px;flex-wrap:wrap}
+.meta-pill{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.phase-label{font-size:11px;padding:2px 8px;border-radius:99px;background:#EEEDFE;color:#3C3489}
+.sections{padding:1rem 1.25rem;display:flex;flex-direction:column;gap:1rem}
+.sec-title{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.sec-title i{font-size:14px}
+.sec-body{font-size:13px;line-height:1.65;color:var(--color-text-primary)}
+.sec-body ul{padding-left:1.1rem}
+.sec-body li{margin-bottom:3px}
+.sec-body code{font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px}
+.resource-link{color:#3C3489;text-decoration:none}
+.resource-link:hover{text-decoration:underline}
+.checkbox-list{display:flex;flex-direction:column;gap:5px}
+.checkbox-list label{display:flex;gap:8px;font-size:13px;cursor:pointer;align-items:flex-start}
+.checkbox-list input{margin-top:2px;accent-color:#3C3489;flex-shrink:0}
+.self-test{background:#EEEDFE;border-radius:var(--border-radius-md);padding:.75rem 1rem}
+.self-test p{font-size:13px;line-height:1.6;color:#3C3489}
+.mistake-box{background:#FAECE7;border-radius:var(--border-radius-md);padding:.75rem 1rem}
+.mistake-box p,.mistake-box li{font-size:13px;line-height:1.6;color:#4A1B0C}
+.deliverable-box{background:#E1F5EE;border-radius:var(--border-radius-md);padding:.75rem 1rem}
+.deliverable-box p,.deliverable-box li{font-size:13px;line-height:1.6;color:#04342C}
+.revision-box{background:#FAEEDA;border-radius:var(--border-radius-md);padding:.75rem 1rem}
+.revision-box p,.revision-box li{font-size:13px;line-height:1.6;color:#412402}
+.day-jump{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem}
+.day-jump button{width:32px;height:32px;font-size:11px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.day-jump button.active{background:#3C3489;color:#EEEDFE;border-color:#3C3489}
+.day-jump button.done{background:#E1F5EE;color:#04342C;border-color:#9FE1CB}
+.progress-bar{height:4px;background:var(--color-background-secondary);border-radius:99px;margin-bottom:1.25rem;overflow:hidden}
+.progress-fill{height:100%;background:#7F77DD;border-radius:99px;transition:width .3s}
+.section-divider{height:0.5px;background:var(--color-border-tertiary)}
+</style>
+
+<div class="root">
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">Daily C++ Engineering Roadmap — Month 1, 30 days covering Modern C++ and Linux Fundamentals</h2>
+
+<div class="header">
+  <h1>C++ Engineering Roadmap — Month 1</h1>
+  <p>Days 1–30 · Phase 1: Modern C++ &amp; STL · Phase 2: Linux, Shell &amp; Build Systems</p>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+
+<div class="phase-tabs">
+  <button class="ptab active" onclick="filterPhase(0)">All days</button>
+  <button class="ptab" onclick="filterPhase(1)">Phase 1 — Modern C++ (Days 1–20)</button>
+  <button class="ptab" onclick="filterPhase(2)">Phase 2 — Linux &amp; Build (Days 21–30)</button>
+</div>
+
+<div class="day-jump" id="jumpBar"></div>
+
+<div class="nav-row">
+  <button onclick="go(-1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Prev</button>
+  <span class="day-badge" id="dayBadge">Day 1 of 30</span>
+  <button onclick="go(1)">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+</div>
+
+<div class="day-card" id="dayCard"></div>
+</div>
+
+<script>
+const DAYS = [
+{
+  day:1, phase:1, title:"C++ Memory Model & Value Categories",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Deeply understand lvalues, rvalues, xvalues, and how the C++ memory model underpins all future topics.",
+  resources:[
+    {label:"LearnCpp Ch 1–2 (Setup & Basics — skim if familiar)",url:"https://www.learncpp.com/cpp-tutorial/introduction-to-these-tutorials/"},
+    {label:"LearnCpp Ch 9.1–9.3 (Value categories)",url:"https://www.learncpp.com/cpp-tutorial/value-categories-lvalues-and-rvalues/"},
+    {label:"CppCon 2019 — Ben Saks 'Back to Basics: Understanding Value Categories'",url:"https://www.youtube.com/watch?v=XS2JddPq7GQ"},
+    {label:"cppreference: Value categories",url:"https://en.cppreference.com/w/cpp/language/value_category"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 9.1–9.4 (full read). Ben Saks CppCon talk: watch 0:00–38:00. cppreference value_category page: full read."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Define: lvalue, rvalue, xvalue, glvalue, prvalue in your own words with one code example each</li>
+<li>Draw a diagram: value category taxonomy tree</li>
+<li>Write: "When does a name have identity? When can it be moved from?"</li>
+<li>Note which expressions produce which category (function call returning T vs T&amp; vs T&amp;&amp;)</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a function that accepts <code>const T&amp;</code> and <code>T&amp;&amp;</code> — call it with lvalue and rvalue, print which overload fires</li>
+<li>Try to bind an rvalue to a non-const lvalue ref — observe the error, write the error message in notes</li>
+<li>Write <code>std::move</code> by hand: <code>template&lt;typename T&gt; T&amp;&amp; my_move(T&amp; t){ return static_cast&lt;T&amp;&amp;&gt;(t); }</code></li>
+<li>Create three variables, determine the category of each expression by compiling &amp; testing</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Set up your dev environment: g++ 13+, CMake 3.28+, VS Code or CLion</li>
+<li>Create a GitHub repo named <code>cpp-mastery</code> with a <code>day01/</code> folder</li>
+<li>Compile all exercises with <code>-std=c++20 -Wall -Wextra -pedantic</code></li>
+</ul>`},
+  ],
+  deliverable:"GitHub commit: day01/ with 4 .cpp files. Notes file: day01_value_categories.md committed.",
+  selfTest:"Can you explain what an xvalue is without looking at notes? Can you write a function template that accepts ONLY rvalues and verify it at compile time? Does std::move actually move anything?",
+  mistakes:"Confusing std::move with an actual move operation (it only casts). Thinking rvalue refs are rvalues (they are lvalues with rvalue-ref type). Forgetting that named rvalue references ARE lvalues.",
+  revision:"Revisit on Day 3 morning (10 min): re-read your notes, re-run exercises. Revisit on Day 7 (full revision day)."
+},
+{
+  day:2, phase:1, title:"Move Semantics & Perfect Forwarding",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Master move constructors, move assignment, and std::forward so you can write zero-copy, efficient code.",
+  resources:[
+    {label:"LearnCpp Ch 22 (Move semantics, full chapter)",url:"https://www.learncpp.com/cpp-tutorial/introduction-to-smart-pointers-move-semantics/"},
+    {label:"CppCon 2019 — Klaus Iglberger 'Back to Basics: Move Semantics'",url:"https://www.youtube.com/watch?v=St0MNEU5b0o"},
+    {label:"Scott Meyers Effective Modern C++ Items 23–29 (free excerpts / summarise from memory)",url:"https://www.oreilly.com/library/view/effective-modern-c/9781491908419/"},
+    {label:"cppreference: std::move, std::forward",url:"https://en.cppreference.com/w/cpp/utility/move"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 22.1–22.5 (all). CppCon Klaus Iglberger: 0:00–52:00 (full). cppreference std::move and std::forward pages."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Write the Rule of Five with a template skeleton</li>
+<li>Diagram: what happens step-by-step when you <code>return bigVector;</code> — NRVO vs move</li>
+<li>Explain std::forward in one paragraph: what problem does it solve?</li>
+<li>Table: copy ctor vs move ctor — when is each called?</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a <code>Buffer</code> class owning a raw heap array — implement Rule of Five correctly</li>
+<li>Add instrumented constructors (print "copy"/"move") — verify with a vector&lt;Buffer&gt;</li>
+<li>Write a universal forwarding wrapper: <code>template&lt;typename F, typename... Args&gt; auto call(F&amp;&amp; f, Args&amp;&amp;... args)</code></li>
+<li>Write a benchmark: insert 1M strings into vector with push_back vs emplace_back (measure time)</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Compile with <code>-fno-elide-constructors</code> to disable RVO — observe copy/move counts</li>
+<li>Commit day02/ to GitHub with all .cpp files</li>
+<li>Write day02_move_semantics.md with your rule of five template</li>
+</ul>`},
+  ],
+  deliverable:"GitHub day02/: Buffer.cpp, forwarding_wrapper.cpp, benchmark.cpp. Notes: rule of five template you will reuse.",
+  selfTest:"Without notes: write a correct move constructor for a class with a raw pointer member. What must you do to the moved-from object? What is std::forward<T>(x) equivalent to as a cast?",
+  mistakes:"Forgetting to null the source pointer in move ctor (double-free). Using std::move in a return statement (suppresses NRVO). Implementing move ctor without noexcept (breaks vector reallocation optimization).",
+  revision:"Revisit Day 1 notes for 5 min first. Day 3 morning: re-write rule of five from memory. Day 7: full revision."
+},
+{
+  day:3, phase:1, title:"RAII & Smart Pointers",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Eliminate manual memory management forever. Own unique_ptr, shared_ptr, weak_ptr internals and use cases.",
+  resources:[
+    {label:"LearnCpp Ch 22.1–22.7 (Smart Pointers)",url:"https://www.learncpp.com/cpp-tutorial/introduction-to-smart-pointers-move-semantics/"},
+    {label:"CppCon 2019 — Arthur O'Dwyer 'Back to Basics: RAII and the Rule of Zero'",url:"https://www.youtube.com/watch?v=7Qgd9B1KuMQ"},
+    {label:"cppreference: unique_ptr, shared_ptr, weak_ptr",url:"https://en.cppreference.com/w/cpp/memory/unique_ptr"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 22.1–22.7 (full). CppCon Arthur O'Dwyer: 0:00–1:01:00. cppreference unique_ptr + shared_ptr constructor/destructor sections."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>RAII definition: resource acquisition = initialization — write 3 real examples</li>
+<li>Table: raw ptr vs unique_ptr vs shared_ptr vs weak_ptr — ownership, copy, move, use case</li>
+<li>Draw: shared_ptr control block diagram (ptr to object, ref count, weak ref count)</li>
+<li>When to use each: decision tree in notes</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Re-implement <code>unique_ptr&lt;T&gt;</code> from scratch (basic: constructor, destructor, move, get, reset, release)</li>
+<li>Implement a RAII file handle class wrapping <code>FILE*</code></li>
+<li>Demonstrate a cyclic reference with shared_ptr and fix it with weak_ptr</li>
+<li>Write a factory function returning unique_ptr — convert to shared_ptr if needed</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Run Valgrind or AddressSanitizer on a program with a raw pointer — observe the leak</li>
+<li>Fix it with unique_ptr — re-run, confirm clean</li>
+<li>Commit day03/ — your mini_unique_ptr.hpp is a portfolio piece</li>
+</ul>`},
+  ],
+  deliverable:"mini_unique_ptr.hpp (fully commented), raii_file.cpp, cyclic_ref_demo.cpp. GitHub commit.",
+  selfTest:"Implement unique_ptr<T> destructor from memory. What happens to the control block when last shared_ptr is destroyed but weak_ptrs remain? Why is make_shared preferred over new?",
+  mistakes:"Using shared_ptr everywhere (overhead). Creating shared_ptr from raw pointer twice (double-free). Not checking weak_ptr.lock() result. Returning raw ptr from function that deletes it.",
+  revision:"Morning warm-up: rewrite unique_ptr destructor. Day 7: test yourself by implementing shared_ptr control block on paper."
+},
+{
+  day:4, phase:1, title:"Templates — Function & Class Templates",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Write generic, type-safe, zero-overhead abstractions using templates. Understand template instantiation.",
+  resources:[
+    {label:"LearnCpp Ch 8.13–8.15, Ch 26 (Templates)",url:"https://www.learncpp.com/cpp-tutorial/function-templates/"},
+    {label:"CppCon 2021 — Andreas Fertig 'Back to Basics: Templates'",url:"https://www.youtube.com/watch?v=HqsEHG0QJXU"},
+    {label:"cppreference: Class template, Function template",url:"https://en.cppreference.com/w/cpp/language/class_template"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp Ch 26.1–26.6 (full). CppCon Andreas Fertig: 0:00–55:00. cppreference class_template and function_template overview."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Template instantiation: explicit vs implicit — examples of each</li>
+<li>Why template code must be in headers (linking model explanation)</li>
+<li>Non-type template parameters — write 3 real-world examples</li>
+<li>Template specialization vs overloading — when to use each</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write <code>template&lt;typename T, std::size_t N&gt; class Stack</code> — push, pop, top, empty, size</li>
+<li>Implement <code>template&lt;typename T&gt; T max3(T a, T b, T c)</code> without using std::max</li>
+<li>Write a partial specialization: <code>Matrix&lt;T,1,1&gt;</code> with a scalar specialization</li>
+<li>Explicit instantiation: put a template class in .cpp to avoid header bloat</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Inspect template instantiation: <code>g++ -fdump-tree-gimple</code> to see what compiler generates</li>
+<li>Measure compile time with and without explicit instantiation</li>
+<li>GitHub commit day04/</li>
+</ul>`},
+  ],
+  deliverable:"Stack<T,N>.hpp (your own implementation), matrix.hpp with partial specialization. GitHub commit.",
+  selfTest:"Without looking: write a class template for a fixed-size ring buffer. What is ODR (one definition rule) and how do templates interact with it? What is a non-type template parameter?",
+  mistakes:"Putting template definitions in .cpp without explicit instantiation (linker errors). Confusing specialization with inheritance. Forgetting that templates are compiled lazily.",
+  revision:"Day 5 morning: re-read template instantiation notes. Day 7: revision day covers Days 1–7."
+},
+{
+  day:5, phase:1, title:"Variadic Templates & Template Metaprogramming Basics",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Write variadic functions, understand pack expansion, and implement basic compile-time computation.",
+  resources:[
+    {label:"LearnCpp Ch 26.5 (Variadic Templates)",url:"https://www.learncpp.com/cpp-tutorial/variadic-functions/"},
+    {label:"CppCon 2014 — Walter Brown 'Modern Template Metaprogramming: A Compendium' Part I",url:"https://www.youtube.com/watch?v=Am2is2QCvxY"},
+    {label:"cppreference: Parameter pack, if constexpr",url:"https://en.cppreference.com/w/cpp/language/parameter_pack"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 26.5 full. CppCon Walter Brown Part I: 0:00–44:00. cppreference parameter_pack (full) + if constexpr."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Pack expansion syntax: write 5 expansion patterns with examples</li>
+<li>Fold expressions: unary left, unary right, binary — one example each</li>
+<li>Compile-time factorial and fibonacci using if constexpr</li>
+<li>Difference: SFINAE (old) vs concepts (C++20) in one paragraph</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write <code>my_printf</code> using variadic templates (type-safe printf replacement)</li>
+<li>Implement <code>sum(args...)</code> using fold expressions</li>
+<li>Write <code>std::tuple</code> basic version: get, make_tuple</li>
+<li>Compile-time type list: <code>TypeList&lt;int, double, char&gt;</code> with At&lt;N&gt; accessor</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Use <code>static_assert</code> with constexpr computations in all exercises</li>
+<li>Explore <code>__PRETTY_FUNCTION__</code> to print type names at compile time</li>
+<li>Commit day05/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"my_printf.cpp, fold_demo.cpp, mini_tuple.hpp, typelist.hpp. All with static_assert tests.",
+  selfTest:"Write a variadic template that prints all arguments separated by commas, using a fold expression. What is the difference between sizeof...(args) and sizeof(args)...?",
+  mistakes:"Forgetting the base case in recursive variadic templates before fold expressions. Mixing pack expansion with comma operator (different semantics). Using SFINAE when concepts are cleaner.",
+  revision:"Day 6 morning: 15-min fold-expression drill. Day 7: full revision day 1–7."
+},
+{
+  day:6, phase:1, title:"Concepts & Constraints (C++20)",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Write self-documenting, constraint-checked templates using C++20 Concepts. Replace SFINAE forever.",
+  resources:[
+    {label:"LearnCpp Ch 8.16 (Concepts)",url:"https://www.learncpp.com/cpp-tutorial/introduction-to-concepts/"},
+    {label:"CppCon 2021 — Sandor Dargo 'C++ Concepts: A Complete Guide'",url:"https://www.youtube.com/watch?v=aEqgpODtLEk"},
+    {label:"cppreference: Constraints and concepts",url:"https://en.cppreference.com/w/cpp/language/constraints"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 8.16–8.18 full. CppCon Sandor Dargo: 0:00–49:00. cppreference constraints page (full). std::concepts header overview."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>4 ways to constrain a template — write all 4 syntax forms</li>
+<li>Standard library concepts cheat sheet: Integral, FloatingPoint, Sortable, Range, Invocable</li>
+<li>requires clause vs requires expression — when to use each</li>
+<li>How concepts improve error messages — before/after example</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Rewrite your Day 4 Stack using concepts to constrain T (must be copyable or movable)</li>
+<li>Write a concept <code>Printable</code> — anything with operator&lt;&lt;</li>
+<li>Write <code>template&lt;Sortable R&gt; void mysort(R&amp; range)</code></li>
+<li>Compose two concepts with &amp;&amp; and || operators</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Compare compile errors: same mistake with SFINAE vs Concepts — paste both in notes</li>
+<li>Check which STL algorithms now use concepts in g++13</li>
+<li>Commit day06/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"constrained_stack.hpp, printable_concept.hpp, mysort.cpp. Notes with error comparison.",
+  selfTest:"Write a concept Arithmetic<T> requiring T supports +,-,*,/. Write a function template using it in all 4 constraint syntaxes. What does a subsumption relationship between concepts mean?",
+  mistakes:"Writing requires requires (extra keyword). Overusing concepts for trivial constraints. Confusing requires clause (limits candidates) with requires expression (tests validity).",
+  revision:"10-min concept syntax drill. Day 7 = revision day."
+},
+{
+  day:7, phase:1, title:"REVISION DAY — Phase 1 Week 1 (Days 1–6)",
+  duration:"4–5 hours", phaseLabel:"Phase 1 · Revision",
+  goal:"Cement all Week 1 concepts. No new learning. Re-implement, explain, and fill gaps.",
+  resources:[
+    {label:"Your own notes from days 1–6",url:"#"},
+    {label:"Quick ref: cppreference main page",url:"https://en.cppreference.com/w/cpp/"},
+  ],
+  sections:[
+    {title:"Revision plan",icon:"ti-refresh",body:`
+<ul>
+<li>Hour 1: Re-read all 6 note files. Highlight anything unclear</li>
+<li>Hour 2: From memory — write Rule of Five template, unique_ptr destructor, fold expression sum</li>
+<li>Hour 3: Write 1 new exercise combining concepts from all 6 days: a <code>TypeSafeContainer&lt;T&gt;</code> using RAII, move semantics, concepts, and a variadic constructor</li>
+<li>Hour 4: Push all code, clean up GitHub repo structure</li>
+</ul>`},
+    {title:"Self-assessment checklist",icon:"ti-check",body:`
+<ul>
+<li>Value categories: can explain xvalue without notes</li>
+<li>Move semantics: rule of five template memorized</li>
+<li>Smart pointers: unique_ptr internals from memory</li>
+<li>Templates: can write class + function template</li>
+<li>Variadic: fold expression for sum/print</li>
+<li>Concepts: 4 constraint syntaxes from memory</li>
+</ul>`},
+    {title:"Integration project",icon:"ti-code",body:`Write <code>SafeVector&lt;T&gt;</code>: heap array, RAII, move semantics, concept constraint on T, variadic emplace_back. Push to GitHub as <code>day07/safe_vector.hpp</code>.`},
+  ],
+  deliverable:"safe_vector.hpp on GitHub. Updated notes for any gaps found. Checklist completed.",
+  selfTest:"Full self-test: implement all 6 topics on paper in 30 min total. Grade yourself. Any item you couldn't do = re-read that day's chapter tonight.",
+  mistakes:"Skipping revision days. Not actually coding from memory (just reading). Treating this as a rest day.",
+  revision:"This IS the revision. Note what you couldn't recall — those are your weak points for Day 14 revision."
+},
+{
+  day:8, phase:1, title:"STL Containers — Internals & Complexity",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · STL",
+  goal:"Understand exactly how vector, deque, list, map, unordered_map are implemented. Choose containers correctly.",
+  resources:[
+    {label:"LearnCpp Ch 23 (STL Containers overview)",url:"https://www.learncpp.com/cpp-tutorial/an-introduction-to-standard-library-algorithms/"},
+    {label:"CppCon 2016 — Chandler Carruth 'High Performance Code 201: Hybrid Data Structures'",url:"https://www.youtube.com/watch?v=vElZc6zSIXM"},
+    {label:"cppreference: vector, deque, map, unordered_map",url:"https://en.cppreference.com/w/cpp/container/vector"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"cppreference: vector (full), deque (overview), map (overview), unordered_map (overview). CppCon Chandler Carruth: 0:00–58:00. Study iterator invalidation rules."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Table: all containers — internal structure, O() for push, pop, search, insert-middle</li>
+<li>vector reallocation: growth factor, invalidation rules</li>
+<li>map vs unordered_map: red-black tree vs hash table — cache performance difference</li>
+<li>When to use each container: decision flowchart</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Implement a minimal <code>vector&lt;T&gt;</code>: heap allocation, push_back with reallocation, iterators</li>
+<li>Benchmark: unordered_map vs map for 1M lookups — measure and record</li>
+<li>Write a cache-friendly struct-of-arrays vs array-of-structs benchmark</li>
+<li>Demonstrate all iterator invalidation cases for vector with comments</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Use <code>perf stat</code> or <code>valgrind --tool=callgrind</code> on your benchmark</li>
+<li>Push day08/ to GitHub</li>
+<li>Document your benchmark results in day08_benchmarks.md</li>
+</ul>`},
+  ],
+  deliverable:"mini_vector.hpp, container_benchmark.cpp, day08_benchmarks.md with real numbers on your machine.",
+  selfTest:"What happens to all iterators when you insert in the middle of a vector? Why is unordered_map sometimes slower than map for small sizes? What is the default load factor of unordered_map?",
+  mistakes:"Using vector<bool> (it is not a container of bools). Reserving wrong capacity. Assuming unordered_map is always faster. Not knowing that list has O(1) insert but terrible cache behavior.",
+  revision:"Day 14 revision covers 8–13. Morning warm-up Day 9: re-read your complexity table."
+},
+{
+  day:9, phase:1, title:"STL Algorithms & Iterators",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · STL",
+  goal:"Master the STL algorithm library. Write idiomatic C++ using range-based algorithms over raw loops.",
+  resources:[
+    {label:"LearnCpp Ch 18 (Iterators), Ch 23 (Algorithms)",url:"https://www.learncpp.com/cpp-tutorial/introduction-to-iterators/"},
+    {label:"CppCon 2019 — Connor Hoekstra 'Algorithm Intuition'",url:"https://www.youtube.com/watch?v=-0tO3Eni2uo"},
+    {label:"cppreference: algorithm library",url:"https://en.cppreference.com/w/cpp/algorithm"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 18.1–18.4 + 23.1–23.6 full. CppCon Connor Hoekstra: 0:00–56:00. cppreference: sort, transform, accumulate, find_if, partition pages."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>5 iterator categories — what operations each supports</li>
+<li>Erase-remove idiom — why it exists, when to use it</li>
+<li>std::ranges vs old algorithms — syntactic differences</li>
+<li>Write 10 algorithms you will use most often with their signatures</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Replace every raw loop in a file-processing program with an STL algorithm</li>
+<li>Implement a pipeline: filter → transform → accumulate using ranges</li>
+<li>Write a custom iterator for your Day 8 mini_vector</li>
+<li>Implement std::transform from scratch to understand the model</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Read cppreference Ranges overview — note: lazy evaluation</li>
+<li>Commit day09/ with iterator-augmented mini_vector.hpp</li>
+</ul>`},
+  ],
+  deliverable:"mini_vector.hpp updated with full iterator support. pipeline_demo.cpp using ranges. custom_iterator.cpp.",
+  selfTest:"Write std::partition from scratch. What is the difference between std::ranges::sort and std::sort? Implement erase-remove for a vector of ints > 5.",
+  mistakes:"Using raw index loops when algorithms exist. Invalidating iterators during algorithm execution. Forgetting that std::remove doesn't erase elements.",
+  revision:"Day 10 morning: re-implement one algorithm from memory. Day 14 covers 8–13."
+},
+{
+  day:10, phase:1, title:"Lambda Expressions & Functional Patterns",
+  duration:"5 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Write expressive, efficient lambdas. Understand capture modes, generic lambdas, and std::function costs.",
+  resources:[
+    {label:"LearnCpp Ch 20 (Lambdas, full chapter)",url:"https://www.learncpp.com/cpp-tutorial/introduction-to-lambdas-anonymous-functions/"},
+    {label:"CppCon 2019 — Nicolai Josuttis 'Lambda: The Mus­tache Mode'",url:"https://www.youtube.com/watch?v=BdZ7PZ6pYok"},
+    {label:"cppreference: Lambda expressions",url:"https://en.cppreference.com/w/cpp/language/lambda"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 20.1–20.8 full. CppCon Nicolai Josuttis: 0:00–48:00. cppreference lambda (full), std::function."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Capture modes: =, &amp;, this, explicit list — write one dangerous + one correct example</li>
+<li>mutable lambdas — what they unlock, when to use</li>
+<li>std::function overhead vs auto lambda storage — write a benchmark</li>
+<li>Generic lambdas (auto param) — what the compiler generates</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a memoization wrapper using lambdas and std::unordered_map</li>
+<li>Implement currying: <code>auto add = [](int x){ return [x](int y){ return x+y; }; };</code></li>
+<li>Replace std::function with a template parameter — benchmark the difference</li>
+<li>Write an event system using vector of std::function callbacks</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Check generated assembly for a lambda vs a regular functor with godbolt.org</li>
+<li>Commit day10/ including your memoization template</li>
+</ul>`},
+  ],
+  deliverable:"memoize.hpp (reusable template), curry_demo.cpp, event_system.cpp. Godbolt link in notes.",
+  selfTest:"What is the type of a lambda? Why can't you store two different lambdas in a std::vector without std::function? What does [=, &x] capture?",
+  mistakes:"Dangling references in captures (capturing local by ref, returning lambda). Using std::function for hot-path callbacks (overhead). Capturing this by value without understanding implications.",
+  revision:"Day 14 revision covers 8–13."
+},
+{
+  day:11, phase:1, title:"std::string, string_view & Modern I/O",
+  duration:"4–5 hours", phaseLabel:"Phase 1 · STL",
+  goal:"Write efficient string handling code. Understand SSO, string_view zero-copy patterns, and modern file I/O.",
+  resources:[
+    {label:"LearnCpp Ch 4.17 (string), Ch 11.6 (string_view)",url:"https://www.learncpp.com/cpp-tutorial/an-introduction-to-std-string/"},
+    {label:"CppCon 2018 — Marshall Clow 'string_view: When to Use It'",url:"https://www.youtube.com/watch?v=H9gAaNRoon4"},
+    {label:"cppreference: basic_string, string_view, filesystem",url:"https://en.cppreference.com/w/cpp/string/basic_string"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp Ch 4.17, 11.6 full. CppCon Marshall Clow: 0:00–46:00. cppreference: string_view (full), std::filesystem overview."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>SSO (small string optimization): how it works, threshold on your platform (run sizeof test)</li>
+<li>When string_view is dangerous: storing beyond scope</li>
+<li>std::filesystem: path manipulation, directory iteration</li>
+<li>Efficient string building: reserve + append vs + operator</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a CSV parser using string_view — zero allocations in hot path</li>
+<li>Measure: string concatenation with +, with reserve+append, with ostringstream</li>
+<li>Implement a simple grep using std::filesystem + string_view</li>
+<li>Detect SSO threshold on your machine with a benchmark</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Profile your CSV parser with valgrind massif — check allocation count</li>
+<li>Commit day11/ including your grep implementation</li>
+</ul>`},
+  ],
+  deliverable:"csv_parser.hpp using string_view, mini_grep.cpp, sso_benchmark.cpp with measured threshold.",
+  selfTest:"Why is string_view dangerous as a member variable? What is SSO and what is the threshold on most x86 implementations? Why should you avoid string + operator in a loop?",
+  mistakes:"Returning string_view to a temporary. Assuming string_view is null-terminated. Not reserving when building large strings.",
+  revision:"Day 14 full revision. Skim this day's notes Day 12 morning."
+},
+{
+  day:12, phase:1, title:"std::optional, std::variant, std::any",
+  duration:"5 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Eliminate null pointer bugs and type-unsafe unions using C++17 vocabulary types.",
+  resources:[
+    {label:"LearnCpp Ch 27.3–27.5 (Vocabulary types)",url:"https://www.learncpp.com/cpp-tutorial/stdoptional/"},
+    {label:"CppCon 2021 — Timur Doumler 'C++17 Vocabulary Types in Practice'",url:"https://www.youtube.com/watch?v=gOEMo3hEFwA"},
+    {label:"cppreference: optional, variant, any",url:"https://en.cppreference.com/w/cpp/utility/optional"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 27.3–27.5. CppCon Timur Doumler: 0:00–51:00. cppreference: optional (full), variant (full), any (overview)."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>optional vs pointer vs sentinel value — when to use each</li>
+<li>variant as a type-safe union: std::visit pattern with overload set</li>
+<li>std::any: type erasure, when appropriate (rarely in performance code)</li>
+<li>monostate for default-constructible variants</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Refactor a parse function returning <code>bool + out param</code> to return <code>optional&lt;Result&gt;</code></li>
+<li>Implement a simple expression tree using variant&lt;Num, Add, Mul&gt; and std::visit</li>
+<li>Write a JSON-lite value type: variant&lt;null_t, bool, int, double, string&gt;</li>
+<li>Implement the overload pattern: <code>template&lt;class... Ts&gt; struct overload : Ts... { using Ts::operator()...; };</code></li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Measure sizeof(optional<int>) vs sizeof(int*) — note in benchmark file</li>
+<li>Commit day12/ including your expression tree</li>
+</ul>`},
+  ],
+  deliverable:"json_value.hpp (variant-based), expr_tree.cpp, overload.hpp. GitHub commit.",
+  selfTest:"Write the overload pattern from memory. What is std::monostate used for? When would you use std::any instead of std::variant?",
+  mistakes:"Using optional<T&> (doesn't exist). Throwing from std::visit (terminate). Forgetting to handle all variant cases (gets caught by compiler with std::visit — use it!).",
+  revision:"Day 14 full revision day. Day 13 morning: re-read variant notes."
+},
+{
+  day:13, phase:1, title:"Error Handling — Exceptions & Error Codes",
+  duration:"5 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Design principled error handling. Know when to use exceptions vs error codes vs expected<T,E>.",
+  resources:[
+    {label:"LearnCpp Ch 27 (Exceptions, full chapter)",url:"https://www.learncpp.com/cpp-tutorial/the-need-for-exceptions/"},
+    {label:"CppCon 2019 — Herb Sutter 'De-fragmenting C++: Making exceptions and RTTI more affordable'",url:"https://www.youtube.com/watch?v=os7cqJ5qlzo"},
+    {label:"cppreference: Exceptions, std::error_code",url:"https://en.cppreference.com/w/cpp/error/exception"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"LearnCpp 27.1–27.9 full. CppCon Herb Sutter: 0:00–56:00. cppreference: exception hierarchy, std::error_code, std::system_error."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Exception safety guarantees: no-throw, strong, basic, none — one example each</li>
+<li>noexcept: when required (move ctor/swap), when to add, cost of violation</li>
+<li>std::error_code pattern for systems programming</li>
+<li>expected&lt;T,E&gt; (C++23 preview) — how it solves the exception-vs-code debate</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a RAII-based transaction class with strong exception guarantee</li>
+<li>Implement a custom exception hierarchy (3 levels deep)</li>
+<li>Write a function returning std::error_code vs one throwing — profile overhead</li>
+<li>Add noexcept to your Day 2 Buffer's move ctor — verify vector uses move</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Check: does your Day 2 Buffer's move ctor get selected by vector? Use instrumented code</li>
+<li>Read: https://godbolt.org — compile with -fno-exceptions and see code size difference</li>
+<li>Commit day13/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"transaction.hpp (strong guarantee), error_code_demo.cpp, exception_hierarchy.hpp. noexcept-fixed Buffer.hpp.",
+  selfTest:"What is the strong exception guarantee? Write a swap function that provides it. Why does std::vector only use move if noexcept? When should you NEVER throw?",
+  mistakes:"Throwing from destructors (undefined behavior on double exception). Missing noexcept on move ops (vector falls back to copy). Catching by value (slicing). Over-using exceptions for control flow.",
+  revision:"Day 14 = full revision day. This is the last content day before revision."
+},
+{
+  day:14, phase:1, title:"REVISION DAY — Phase 1 Week 2 (Days 8–13)",
+  duration:"4–5 hours", phaseLabel:"Phase 1 · Revision",
+  goal:"Lock in STL internals, algorithms, vocabulary types, and error handling. Identify weak spots before concurrency.",
+  resources:[{label:"Your notes days 8–13",url:"#"},{label:"cppreference main",url:"https://en.cppreference.com"}],
+  sections:[
+    {title:"Revision plan",icon:"ti-refresh",body:`
+<ul>
+<li>Hour 1: Re-read all notes. Produce a 1-page cheat sheet for each: containers, algorithms, lambdas, vocab types</li>
+<li>Hour 2: From memory — write mini_vector push_back with reallocation, optional-returning parse function, overload pattern</li>
+<li>Hour 3: Integration challenge: write a log parser that reads a file (filesystem), tokenises (string_view), stores results (variant), and handles errors (error_code)</li>
+<li>Hour 4: Push everything, tag v0.1 on GitHub as 'Phase 1 Week 2 complete'</li>
+</ul>`},
+    {title:"Week 2 self-assessment",icon:"ti-check",body:`
+<ul>
+<li>Can explain vector reallocation and iterator invalidation</li>
+<li>Can implement erase-remove idiom</li>
+<li>Can write a lambda with each capture mode</li>
+<li>Knows SSO threshold and string_view safety rules</li>
+<li>Can write std::visit with overload pattern</li>
+<li>Understands exception safety levels</li>
+</ul>`},
+  ],
+  deliverable:"log_parser.cpp integration project. cheat_sheet.md for this week. GitHub tag v0.1.",
+  selfTest:"Full written test: implement (on paper) the overload pattern, a strong-guarantee swap, SSO test, and erase-remove. Time yourself: should take under 20 minutes.",
+  mistakes:"Skipping integration project. Treating cheat sheet as unnecessary. Not tagging GitHub milestones.",
+  revision:"This is the revision. What you fail = re-read tonight."
+},
+{
+  day:15, phase:1, title:"Concurrency — Threads, Mutex & RAII Locks",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Concurrency",
+  goal:"Write correct multi-threaded programs using std::thread, RAII locks, and understand data races.",
+  resources:[
+    {label:"LearnCpp Ch 8 section on concurrency (plus search 'thread')",url:"https://www.learncpp.com/"},
+    {label:"CppCon 2017 — Fedor Pikus 'C++ Atomics, From Basic to Advanced'",url:"https://www.youtube.com/watch?v=ZQFzMfHIxng"},
+    {label:"Anthony Williams 'C++ Concurrency in Action' Ch 1–3 (available free preview / library)",url:"https://www.manning.com/books/c-plus-plus-concurrency-in-action-second-edition"},
+    {label:"cppreference: thread, mutex, lock_guard, unique_lock",url:"https://en.cppreference.com/w/cpp/thread"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"cppreference: std::thread (full), std::mutex, std::lock_guard, std::unique_lock (full). CppCon Fedor Pikus: 0:00–40:00. Williams Ch 1–2 (if accessible)."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Data race definition + one minimal reproducing example</li>
+<li>Mutex types: mutex, recursive_mutex, shared_mutex — use case for each</li>
+<li>lock_guard vs unique_lock vs scoped_lock — differences in one table</li>
+<li>Deadlock: conditions required (ACID: acquire+hold, circular, indefinite wait, no preemption)</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a thread-safe queue: push/pop with mutex + condition_variable</li>
+<li>Demonstrate a data race with ThreadSanitizer — note the TSan output in your notes</li>
+<li>Fix the race — re-run TSan to confirm clean</li>
+<li>Write a deadlock scenario with 2 mutexes — fix with std::scoped_lock</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Compile with <code>-fsanitize=thread</code> — run your data race program</li>
+<li>Commit day15/ — thread_safe_queue.hpp is a portfolio piece</li>
+</ul>`},
+  ],
+  deliverable:"thread_safe_queue.hpp (production-quality). TSan demo + fix. Deadlock demo + fix. All committed.",
+  selfTest:"What is a data race (C++ standard definition)? Why is volatile NOT a synchronisation primitive? Write a thread-safe singleton from memory (use std::call_once).",
+  mistakes:"Using volatile for synchronisation (wrong). Not joining threads (terminate). Using mutex where atomic suffices. Recursive locking on non-recursive mutex (UB).",
+  revision:"Day 21 revision covers 15–20."
+},
+{
+  day:16, phase:1, title:"condition_variable, futures & async",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Concurrency",
+  goal:"Coordinate threads with condition variables. Launch async tasks with futures and promises.",
+  resources:[
+    {label:"cppreference: condition_variable, future, promise, async",url:"https://en.cppreference.com/w/cpp/thread/condition_variable"},
+    {label:"CppCon 2018 — Arthur O'Dwyer 'Concurrency in C++'",url:"https://www.youtube.com/watch?v=F6Ipn7gCOsY"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"cppreference: condition_variable (full), future (full), async, promise, packaged_task. CppCon Arthur O'Dwyer: 0:00–55:00."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Spurious wakeups: what they are, how to handle with predicate</li>
+<li>promise/future ownership model — who sets, who gets</li>
+<li>std::async launch policies: async vs deferred — difference and when each fires</li>
+<li>packaged_task vs promise — when to use each</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Extend your Day 15 queue to use condition_variable for blocking pop</li>
+<li>Implement a thread pool (basic: N threads + task queue with futures)</li>
+<li>Write a parallel map using std::async — compare with serial version</li>
+<li>Use packaged_task to schedule work on a specific thread</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Measure thread pool speedup on a CPU-bound task (benchmark it)</li>
+<li>Commit day16/ — thread_pool.hpp is a major portfolio piece</li>
+</ul>`},
+  ],
+  deliverable:"thread_pool.hpp (basic but correct), parallel_map.cpp, condition_variable_queue.hpp. Benchmark results in notes.",
+  selfTest:"Write a condition_variable wait loop correctly (with predicate). What happens if you destroy a future without getting it when std::async used async policy? What is a spurious wakeup?",
+  mistakes:"Checking condition without predicate (spurious wakeup bug). Not calling future.get() (exception swallowed). Using async when deferred semantics are needed (lazy vs eager).",
+  revision:"Day 21 revision."
+},
+{
+  day:17, phase:1, title:"Memory Model & Atomics (Introduction)",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Concurrency",
+  goal:"Understand the C++ memory model. Use atomics correctly for simple lock-free patterns.",
+  resources:[
+    {label:"CppCon 2017 — Fedor Pikus 'C++ Atomics' (full talk)",url:"https://www.youtube.com/watch?v=ZQFzMfHIxng"},
+    {label:"cppreference: std::atomic, memory_order",url:"https://en.cppreference.com/w/cpp/atomic/atomic"},
+    {label:"Herb Sutter 'atomic<> Weapons' CppCon 2012 Part 1",url:"https://www.youtube.com/watch?v=A8eCGOqgvH4"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"CppCon Fedor Pikus: full talk (all 62 min). Herb Sutter Part 1: 0:00–45:00. cppreference: atomic (full), memory_order enum."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Sequential consistency vs relaxed — explain the difference in one paragraph</li>
+<li>The 6 memory orders: what each guarantees, strongest to weakest</li>
+<li>Happens-before relationship — formal definition in your words</li>
+<li>When to use seq_cst (always unless you measure otherwise) — note this rule</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Implement an atomic reference counter for a shared resource</li>
+<li>Write a lock-free stack (Treiber stack) — push only, seq_cst</li>
+<li>Implement a spinlock using atomic_flag</li>
+<li>Demonstrate the ABA problem on paper — write a comment explaining it in code</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Use TSan to verify your atomic programs have no races</li>
+<li>Compare performance: atomic counter vs mutex counter for 1M increments</li>
+<li>Commit day17/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"atomic_ref_counter.hpp, treiber_stack.hpp, spinlock.hpp. Benchmark: atomic vs mutex counter.",
+  selfTest:"What does memory_order_acquire guarantee? Write a correct spinlock using only atomic_flag. Why is seq_cst the safe default?",
+  mistakes:"Using relaxed ordering without deep understanding (data corruption). Implementing lock-free wrong (ABA). Using atomic<bool> as a mutex (almost always wrong approach).",
+  revision:"Day 21 full revision. Phase 5 (Advanced) revisits this deeply."
+},
+{
+  day:18, phase:1, title:"Coroutines (C++20) — Introduction",
+  duration:"5 hours", phaseLabel:"Phase 1 · Modern C++",
+  goal:"Understand coroutine fundamentals. Write a simple generator and async task using C++20 coroutines.",
+  resources:[
+    {label:"CppCon 2022 — Andreas Fertig 'C++20 Coroutines'",url:"https://www.youtube.com/watch?v=J7fYddslH0Q"},
+    {label:"cppreference: Coroutines",url:"https://en.cppreference.com/w/cpp/language/coroutines"},
+    {label:"lewissbaker/cppcoro GitHub (reference implementations)",url:"https://github.com/lewissbaker/cppcoro"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"CppCon Andreas Fertig: 0:00–55:00. cppreference coroutines (full page). cppcoro README and examples."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>co_await, co_yield, co_return — what each does to the coroutine frame</li>
+<li>Promise type: initial_suspend, final_suspend, unhandled_exception, return_value</li>
+<li>Coroutine frame lifetime — where it lives (heap)</li>
+<li>Comparison: coroutines vs threads for async I/O</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a <code>Generator&lt;int&gt;</code> type — yield Fibonacci numbers</li>
+<li>Write an <code>AsyncTask&lt;T&gt;</code> that wraps a future</li>
+<li>Use co_await to chain two async operations</li>
+<li>Inspect the generated code on godbolt.org</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Compile with <code>-std=c++20</code> — verify coroutine support</li>
+<li>Note: coroutines in production require a framework (cppcoro, Asio) — document this</li>
+<li>Commit day18/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"generator.hpp, async_task.hpp, fibonacci_gen.cpp. Godbolt link showing coroutine frame in notes.",
+  selfTest:"What is a coroutine promise type? Write a minimal Generator<int> coroutine type with just enough promise machinery to compile. Where does the coroutine frame live?",
+  mistakes:"Confusing coroutines with threads (single-threaded by default). Dangling references to stack variables in coroutine frames. Returning local variables via co_return.",
+  revision:"Day 21 revision."
+},
+{
+  day:19, phase:1, title:"C++ Build Systems & Compilation Internals",
+  duration:"5 hours", phaseLabel:"Phase 1 · Tooling",
+  goal:"Understand the full compilation pipeline. Write multi-target CMake projects. Use compiler flags correctly.",
+  resources:[
+    {label:"MIT Missing Semester — Build Systems lecture",url:"https://missing.csail.mit.edu/2020/metaprogramming/"},
+    {label:"CMake official tutorial",url:"https://cmake.org/cmake/help/latest/guide/tutorial/index.html"},
+    {label:"CppCon 2017 — Mathieu Ropert 'Using Modern CMake Patterns to Enforce a Good Modular Design'",url:"https://www.youtube.com/watch?v=eC9-iRN2b04"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"MIT Missing Semester Build Systems: full lecture (35 min). CMake Tutorial: Steps 1–7. CppCon Mathieu Ropert: 0:00–50:00."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Compilation pipeline: preprocessing → compilation → assembly → linking — draw it</li>
+<li>CMake target model: INTERFACE, PUBLIC, PRIVATE — one example each</li>
+<li>Key compiler flags you will always use: -Wall -Wextra -Werror -O2 -g -fsanitize=address,undefined</li>
+<li>Static vs shared libraries — when to use each</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Convert your entire cpp-mastery repo to a proper CMake project with subdirectories</li>
+<li>Create a static library <code>libmycontainers</code> from your day08 vector</li>
+<li>Create a shared library and link it</li>
+<li>Add AddressSanitizer build type to your CMake</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Run <code>cmake --build . --target clean</code> and understand what happened</li>
+<li>Inspect the generated Makefile to understand dependencies</li>
+<li>Commit fully restructured CMake project to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"Entire cpp-mastery repo restructured with proper CMakeLists.txt at root and per-subdirectory. README updated.",
+  selfTest:"What is the difference between PUBLIC and PRIVATE in target_link_libraries? Write a CMakeLists.txt that creates a static library and an executable linking it. What does -fPIC do?",
+  mistakes:"Using glob to collect source files (breaks incremental builds). Using directory-based cmake commands instead of target-based. Forgetting to install headers for libraries.",
+  revision:"Day 21 full revision. This carries into Phase 2."
+},
+{
+  day:20, phase:1, title:"Debugging — GDB, AddressSanitizer & Valgrind",
+  duration:"5 hours", phaseLabel:"Phase 1 · Tooling",
+  goal:"Debug programs systematically. Find memory errors, data races, and undefined behavior with tooling.",
+  resources:[
+    {label:"MIT Missing Semester — Debugging lecture",url:"https://missing.csail.mit.edu/2020/debugging-profiling/"},
+    {label:"GDB documentation — quick start",url:"https://sourceware.org/gdb/documentation/"},
+    {label:"AddressSanitizer paper (Google)",url:"https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/37752.pdf"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"MIT Missing Semester Debugging: full lecture (50 min). GDB: Chapter 1–4 of manual. ASan paper: skim sections 1–3."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>GDB cheat sheet: break, run, next, step, print, backtrace, watch, condition</li>
+<li>When to use each tool: ASan (memory), TSan (threads), UBSan (UB), Valgrind (exhaustive)</li>
+<li>Core dumps: how to enable, how to load in GDB</li>
+<li>printf debugging vs structured debugging — note the tradeoffs</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Introduce a use-after-free — find it with ASan, fix it</li>
+<li>Introduce an integer overflow — find it with UBSan, fix it</li>
+<li>Use GDB to debug a segfault: set breakpoint, backtrace, inspect variables</li>
+<li>Profile a slow function with perf or gprof — find the hot path</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Set up a .gdbinit with useful defaults (pretty printers for STL)</li>
+<li>Enable core dumps: <code>ulimit -c unlimited</code></li>
+<li>Commit day20/ with all buggy programs + their fixed versions</li>
+</ul>`},
+  ],
+  deliverable:"GDB cheat sheet in notes. Buggy programs + fixed versions committed. .gdbinit in repo.",
+  selfTest:"Without notes: list 5 GDB commands and what they do. What does ASan detect that Valgrind also detects, and what does each miss? How do you load a core dump into GDB?",
+  mistakes:"Debugging in release mode (no debug info). Not enabling sanitizers during development. Using printf as primary debugging strategy in large codebases.",
+  revision:"Day 21 = full Phase 1 revision."
+},
+{
+  day:21, phase:1, title:"REVISION & ASSESSMENT — Phase 1 Complete (Days 15–20)",
+  duration:"5–6 hours", phaseLabel:"Phase 1 · Final Assessment",
+  goal:"Verify Phase 1 mastery. Build a mini project combining all Phase 1 concepts. GitHub milestone.",
+  resources:[{label:"Your notes, days 1–20",url:"#"}],
+  sections:[
+    {title:"Assessment project",icon:"ti-code",body:`Build a <strong>Thread-Safe Object Pool</strong> library:
+<ul>
+<li>Template class <code>ObjectPool&lt;T, N&gt;</code></li>
+<li>RAII borrow/return tokens (smart pointer wrapper)</li>
+<li>Thread-safe with mutex or atomics</li>
+<li>Tested with 4 threads simultaneously borrowing objects</li>
+<li>CMake project, builds cleanly with -Wall -Wextra -fsanitize=address,thread</li>
+<li>README explaining design choices</li>
+</ul>`},
+    {title:"Phase 1 interview checkpoint",icon:"ti-star",body:`Questions you must be able to answer fluently:
+<ul>
+<li>Explain move semantics and when they are triggered</li>
+<li>What is the difference between unique_ptr and shared_ptr?</li>
+<li>What is a data race and how do you prevent it?</li>
+<li>Explain RAII with a real example</li>
+<li>Write a variadic template function</li>
+<li>What is the C++ memory model?</li>
+</ul>`},
+    {title:"GitHub milestone",icon:"ti-flag",body:`
+<ul>
+<li>Tag: <code>v1.0-phase1-complete</code></li>
+<li>Files: object_pool.hpp, CMakeLists.txt, README.md, all day01–day20 folders</li>
+<li>Update README with: skills learned, project list, tools used</li>
+</ul>`},
+  ],
+  deliverable:"object_pool library on GitHub. Phase 1 complete tag. Updated README with skills list.",
+  selfTest:"Full technical interview simulation: answer all 6 checkpoint questions aloud (or write them). Should take < 15 minutes. Any gaps = mark for Phase 5 (Advanced C++) review.",
+  mistakes:"Marking phase complete without the project built and tested with sanitizers.",
+  revision:"Phase 5 (Days 61–75) revisits memory ordering and lock-free in depth. Mark your weak points."
+},
+{
+  day:22, phase:2, title:"Linux Fundamentals — Filesystem & Process Model",
+  duration:"5 hours", phaseLabel:"Phase 2 · Linux",
+  goal:"Understand the Linux filesystem hierarchy, process model, and how the kernel manages processes.",
+  resources:[
+    {label:"MIT Missing Semester — Shell Tools and Scripting",url:"https://missing.csail.mit.edu/2020/shell-tools/"},
+    {label:"OSTEP Chapter 4–6 (Processes)",url:"https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf"},
+    {label:"Linux man-pages: proc(5), fork(2), exec(2)",url:"https://man7.org/linux/man-pages/"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"MIT Missing Semester Shell Tools: full lecture. OSTEP Ch 4 (Process), Ch 5 (API), Ch 6 (Mechanism) — read all three. man fork, man exec, man wait in terminal."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Linux FHS: /, /bin, /etc, /proc, /sys, /dev — what each contains</li>
+<li>Process lifecycle: fork → exec → exit → wait — draw the diagram</li>
+<li>/proc/PID: key files and what they contain</li>
+<li>Environment variables: how they're inherited across fork/exec</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a C++ program that forks, child exec's <code>ls</code>, parent waits</li>
+<li>Read <code>/proc/self/maps</code> and parse the memory regions — print them formatted</li>
+<li>Use <code>strace</code> on a simple program — read and explain 10 syscalls in notes</li>
+<li>Write a program that prints its PID, PPID, UID, GID</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Run <code>pstree -p</code> — identify your shell, its parent, and children</li>
+<li>Commit day22/ to GitHub</li>
+<li>Read your strace output and write what each syscall does</li>
+</ul>`},
+  ],
+  deliverable:"fork_exec.cpp, proc_reader.cpp (parses /proc/self/maps), strace_analysis.md. GitHub commit.",
+  selfTest:"What happens to open file descriptors across fork()? What is the difference between exec and execv? What is a zombie process and how do you prevent it?",
+  mistakes:"Forgetting to wait() for children (zombie processes). Assuming exec() preserves open FDs by default. Confusing fork() return values (0 in child, PID in parent).",
+  revision:"Day 30 revision covers Phase 2. Day 23 morning: re-read fork/exec diagram."
+},
+{
+  day:23, phase:2, title:"Shell Scripting — Bash Deep Dive",
+  duration:"5 hours", phaseLabel:"Phase 2 · Linux",
+  goal:"Write production-quality shell scripts. Automate build, test, and deployment tasks.",
+  resources:[
+    {label:"MIT Missing Semester — Shell & Scripting lecture",url:"https://missing.csail.mit.edu/2020/course-shell/"},
+    {label:"Bash manual (GNU)",url:"https://www.gnu.org/software/bash/manual/bash.html"},
+    {label:"ShellCheck — online shell linter",url:"https://www.shellcheck.net/"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"MIT Missing Semester Shell lecture (full). Bash manual: Ch 3 (Basic Shell Features), Ch 6 (Bash Features). ShellCheck: lint all your scripts."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Variable expansion pitfalls: always quote <code>"$var"</code></li>
+<li>Pipelines and process substitution: <code>|</code>, <code>&lt;(cmd)</code></li>
+<li>Error handling in scripts: <code>set -euo pipefail</code> — why each flag matters</li>
+<li>Heredocs, arrays, associative arrays — syntax cheat sheet</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a build script for your cpp-mastery CMake project (clean, configure, build, test)</li>
+<li>Write a log file analyser: count errors by type, top 10 IPs from access log</li>
+<li>Write a script that monitors a directory and alerts when a file changes (inotifywait)</li>
+<li>Write a script with proper error handling, usage help, and argument parsing</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Run all scripts through ShellCheck — fix all warnings</li>
+<li>Add shebang, set -euo pipefail to every script</li>
+<li>Commit day23/ scripts to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"build.sh (CMake wrapper), log_analyser.sh, dir_monitor.sh. All pass ShellCheck. GitHub commit.",
+  selfTest:"What does set -u do? Write a for loop over an array in bash. What is the difference between $* and $@ in double quotes?",
+  mistakes:"Not quoting variables (word splitting bugs). Missing set -e (silent errors). Using bash-isms in /bin/sh scripts. Forgetting to make scripts executable (chmod +x).",
+  revision:"Day 30 revision. Day 24 morning: re-read set -euo pipefail notes."
+},
+{
+  day:24, phase:2, title:"Git — Internals & Advanced Workflow",
+  duration:"5 hours", phaseLabel:"Phase 2 · Linux",
+  goal:"Understand Git internals (objects, refs, DAG). Use advanced Git for professional team workflow.",
+  resources:[
+    {label:"MIT Missing Semester — Version Control (Git) lecture",url:"https://missing.csail.mit.edu/2020/version-control/"},
+    {label:"Pro Git Book (free) Ch 1–3, 7, 10",url:"https://git-scm.com/book/en/v2"},
+    {label:"Git internals: plumbing vs porcelain",url:"https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"MIT Missing Semester Git: full lecture. Pro Git: Ch 1–3 (full), Ch 7.1–7.3 (reset, rebase, stash), Ch 10 (Git internals — plumbing)."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Git object model: blob, tree, commit, tag — draw the DAG</li>
+<li>Difference: merge vs rebase — when to use each on a team</li>
+<li>git reset --soft/mixed/hard — what each moves</li>
+<li>Reflog: how to recover from mistakes</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Use <code>git cat-file -p</code> to inspect a commit object — read the raw tree</li>
+<li>Create a feature branch, make 5 commits, interactive rebase to squash them</li>
+<li>Simulate a merge conflict and resolve it manually</li>
+<li>Use <code>git bisect</code> to find a 'bug' commit in a test repo</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Set up a .gitconfig with useful aliases: lg (log graph), st, co, br</li>
+<li>Add a pre-commit hook to your cpp-mastery repo that runs CMake build</li>
+<li>Commit day24/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"Updated .gitconfig with aliases. Pre-commit hook installed. Day24 notes with Git DAG diagram committed.",
+  selfTest:"What is the SHA-1 of a Git commit derived from? What is the difference between git reset HEAD~1 --soft and --hard? How does git rebase work internally?",
+  mistakes:"Using rebase on shared branches (rewrites history). Not using .gitignore for build artifacts. Committing large binaries to Git.",
+  revision:"Day 30 revision."
+},
+{
+  day:25, phase:2, title:"Linux Signals, IPC & File Descriptors",
+  duration:"5 hours", phaseLabel:"Phase 2 · Linux",
+  goal:"Handle signals correctly. Use pipes, FIFOs, and shared memory for inter-process communication.",
+  resources:[
+    {label:"OSTEP Ch 47 (Interlude: Files and Directories)",url:"https://pages.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf"},
+    {label:"Beej's Guide to IPC (free)",url:"https://beej.us/guide/bgipc/"},
+    {label:"Linux man-pages: signal(7), pipe(2), mmap(2)",url:"https://man7.org/linux/man-pages/"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"OSTEP Ch 47 full. Beej's IPC: Ch 1–5 (signals, pipes, FIFOs, message queues). man signal, man pipe, man mmap."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Signal disposition: default, ignore, handler — list 10 important signals</li>
+<li>Signal-safe functions: which functions you can call from a signal handler</li>
+<li>File descriptor table: per-process vs kernel file table — draw the diagram</li>
+<li>Pipe: anonymous vs named (FIFO) — when to use each</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write a SIGTERM handler that cleans up resources and exits gracefully</li>
+<li>Build a parent-child pipe: child counts words in stdin, sends count to parent via pipe</li>
+<li>Write a shared memory producer-consumer using mmap + POSIX semaphore</li>
+<li>Use dup2 to redirect stdout of a child process to a file</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Kill your own process with SIGTERM — verify cleanup handler fires</li>
+<li>Commit day25/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"signal_handler.cpp (graceful shutdown), pipe_wordcount.cpp, shm_producer_consumer.cpp. All committed.",
+  selfTest:"What is a signal-safe function? Can you call malloc() in a signal handler? Write a correct SIGCHLD handler. What is the relationship between file descriptors and open file descriptions?",
+  mistakes:"Calling non-async-signal-safe functions in signal handlers (malloc, printf). Not restoring SA_RESTART for syscalls. Closing FD before child process copies it after fork.",
+  revision:"Day 30 revision."
+},
+{
+  day:26, phase:2, title:"Linux System Calls & Kernel Interface",
+  duration:"5 hours", phaseLabel:"Phase 2 · Linux",
+  goal:"Understand how user-space talks to the kernel. Write programs using syscalls directly. Understand overhead.",
+  resources:[
+    {label:"OSTEP Ch 2 (Introduction to OS), Ch 33 (Event-based concurrency)",url:"https://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf"},
+    {label:"Linux System Call Interface (lwn.net article)",url:"https://lwn.net/Articles/604515/"},
+    {label:"Linux man-pages: syscall(2), intro(2)",url:"https://man7.org/linux/man-pages/man2/intro.2.html"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"OSTEP Ch 2 (full) + Ch 33 (full). lwn.net syscall interface article. man syscall(2). Trace syscalls with strace for 3 different programs."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Syscall mechanism: user mode → trap → kernel mode → return — draw the path</li>
+<li>vDSO: what it is, which calls it accelerates (gettimeofday, clock_gettime)</li>
+<li>The 30 most commonly used syscalls — list with 1-line description each</li>
+<li>Syscall overhead: why context switches matter in HFT</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Call <code>write()</code> directly without printf — observe strace confirms 1 syscall</li>
+<li>Benchmark: printf vs write vs fwrite for 1M small outputs</li>
+<li>Write a program using epoll to monitor multiple file descriptors</li>
+<li>Measure syscall overhead: use clock_gettime before/after a trivial syscall loop</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Record syscall overhead in your notes (should be ~50–200ns on modern hardware)</li>
+<li>Commit day26/ to GitHub</li>
+</ul>`},
+  ],
+  deliverable:"epoll_demo.cpp, syscall_benchmark.cpp with measured overhead. Notes with 30-syscall cheat sheet.",
+  selfTest:"What is the vDSO? Why does getpid() not require a context switch on Linux? Write an epoll loop that handles reads from 3 file descriptors.",
+  mistakes:"Assuming every libc function is a single syscall. Not checking errno after syscall failure. Blocking in an epoll event loop.",
+  revision:"Day 30 revision. Connects to Phase 3 (OS) and Phase 4 (Networks)."
+},
+{
+  day:27, phase:2, title:"CMake — Advanced Features & Project Structure",
+  duration:"5 hours", phaseLabel:"Phase 2 · Build Systems",
+  goal:"Build professional CMake projects: testing with CTest, packaging with CPack, dependency management.",
+  resources:[
+    {label:"CMake Tutorial official — Steps 8–12",url:"https://cmake.org/cmake/help/latest/guide/tutorial/index.html"},
+    {label:"CMake best practices (Professional CMake free excerpt)",url:"https://crascit.com/professional-cmake/"},
+    {label:"CppCon 2019 — Craig Scott 'Deep CMake for Library Authors'",url:"https://www.youtube.com/watch?v=m0DwB4OvDXk"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"CMake Tutorial Steps 8–12. CppCon Craig Scott: 0:00–54:00. Professional CMake free chapter on testing."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>FetchContent vs find_package vs ExternalProject — when to use each</li>
+<li>CTest: add_test, PASS_REGULAR_EXPRESSION, test properties</li>
+<li>Generator expressions: <code>$&lt;CONFIG:Debug&gt;</code> — 5 useful examples</li>
+<li>Install rules: install(TARGETS), install(HEADERS) — what goes where</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Add Google Test via FetchContent to your cpp-mastery project</li>
+<li>Write unit tests for your thread_safe_queue and object_pool</li>
+<li>Add CTest integration — <code>cmake --build . --target test</code> should pass all</li>
+<li>Create install targets so your library is installable system-wide</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Run <code>ctest -V</code> — all tests pass</li>
+<li>Set up GitHub Actions CI that builds and tests automatically on push</li>
+<li>Commit day27/ — CI badge in README</li>
+</ul>`},
+  ],
+  deliverable:"Fully tested CMake project with GTest, CTest, and GitHub Actions CI. README has CI badge and build instructions.",
+  selfTest:"Write a CMakeLists.txt that fetches GoogleTest, adds tests, and installs the library. What is a generator expression and when do you need one?",
+  mistakes:"Mixing in-source and out-of-source builds. Not separating test targets from library targets. Forgetting to call enable_testing() before add_test().",
+  revision:"Day 30 final Phase 2 revision."
+},
+{
+  day:28, phase:2, title:"Performance Profiling & Benchmarking",
+  duration:"5 hours", phaseLabel:"Phase 2 · Tooling",
+  goal:"Profile real programs systematically. Use perf, flamegraphs, and Google Benchmark to find and fix bottlenecks.",
+  resources:[
+    {label:"MIT Missing Semester — Profiling section",url:"https://missing.csail.mit.edu/2020/debugging-profiling/"},
+    {label:"Brendan Gregg's perf examples",url:"https://www.brendangregg.com/perf.html"},
+    {label:"Google Benchmark GitHub",url:"https://github.com/google/benchmark"},
+    {label:"CppCon 2015 — Chandler Carruth 'Tuning C++: Benchmarks, and CPUs, and Compilers'",url:"https://www.youtube.com/watch?v=nXaxk27zwlk"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"MIT Missing Semester profiling section (full). Brendan Gregg perf examples page (read all examples). CppCon Chandler Carruth: 0:00–58:00. Google Benchmark README + basic usage guide."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>perf stat key metrics: IPC, cache misses, branch mispredictions — what each means for performance</li>
+<li>Flamegraph interpretation: wide = hot, tall = deep call stack</li>
+<li>Benchmarking rules: prevent dead code elimination (DoNotOptimize), warm up, use geometric mean</li>
+<li>Compiler optimisation levels: -O0, -O1, -O2, -O3, -Os — when to profile which</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Write 3 Google Benchmark cases for your mini_vector vs std::vector</li>
+<li>Generate a flamegraph for your thread_pool under load</li>
+<li>Use <code>perf stat</code> on your container benchmarks — record L1/L2 cache miss rates</li>
+<li>Profile and optimise one hot function — document before/after numbers</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>Install FlameGraph scripts and generate one SVG flamegraph</li>
+<li>Add benchmark targets to CMake (using Google Benchmark FetchContent)</li>
+<li>Commit day28/ with benchmark results and flamegraph</li>
+</ul>`},
+  ],
+  deliverable:"Google Benchmark suite in cpp-mastery. At least one flamegraph SVG committed. Profiling results in day28_profiling.md.",
+  selfTest:"What does IPC < 1.0 indicate? What does a wide shallow flamegraph vs narrow deep one tell you? What is dead code elimination in benchmarks and how does DoNotOptimize prevent it?",
+  mistakes:"Benchmarking in debug mode. Not warming up the CPU. Measuring code with the optimizer optimising away the work. Confusing sampling profilers with instrumentation profilers.",
+  revision:"Day 30 revision."
+},
+{
+  day:29, phase:2, title:"Static Analysis, Code Quality & Modern C++ Toolchain",
+  duration:"5 hours", phaseLabel:"Phase 2 · Tooling",
+  goal:"Integrate clang-tidy, clang-format, cppcheck into your workflow. Write analysable, maintainable code.",
+  resources:[
+    {label:"clang-tidy documentation",url:"https://clang.llvm.org/extra/clang-tidy/"},
+    {label:"clang-format style options",url:"https://clang.llvm.org/docs/ClangFormatStyleOptions.html"},
+    {label:"CppCon 2018 — Anastasia Kazakova 'Behind the Magic: How C++ Analysis Tools Work'",url:"https://www.youtube.com/watch?v=eMFhHfhDLqo"},
+  ],
+  sections:[
+    {title:"Chapters/Timestamps",icon:"ti-book",body:"clang-tidy docs: overview + checks list (read modernize-*, cppcoreguidelines-* categories). clang-format docs: options reference. CppCon Anastasia Kazakova: 0:00–48:00."},
+    {title:"Notes to write",icon:"ti-pencil",body:`
+<ul>
+<li>Most useful clang-tidy checks — list 10 with what they catch</li>
+<li>.clang-format config options you will always set</li>
+<li>compile_commands.json: what it is, why tools need it, how CMake generates it</li>
+<li>Address/Thread/UB/Memory sanitizers — which to run in which scenario</li>
+</ul>`},
+    {title:"Coding exercises",icon:"ti-code",body:`
+<ul>
+<li>Run clang-tidy on your entire cpp-mastery project — fix all warnings</li>
+<li>Set up .clang-format (choose a style) — run clang-format on all .cpp files</li>
+<li>Add clang-tidy to your GitHub Actions CI pipeline</li>
+<li>Run cppcheck — fix or document any additional findings</li>
+</ul>`},
+    {title:"Mini tasks",icon:"ti-check",body:`
+<ul>
+<li>CMake: set(CMAKE_EXPORT_COMPILE_COMMANDS ON) — confirm compile_commands.json generated</li>
+<li>All CI checks pass: build + test + clang-tidy + clang-format check</li>
+<li>Commit day29/ — CI pipeline is now a strong portfolio signal</li>
+</ul>`},
+  ],
+  deliverable:".clang-tidy, .clang-format in repo root. Full CI pipeline in .github/workflows/ci.yml. All checks pass.",
+  selfTest:"What is compile_commands.json? Name 3 clang-tidy check categories. What does the modernize-use-auto check do and why might you disable it?",
+  mistakes:"Disabling checks without understanding them. Not committing .clang-format (every contributor gets different formatting). Running tools on generated files (exclude build directory).",
+  revision:"Day 30 = final Phase 2 revision."
+},
+{
+  day:30, phase:2, title:"REVISION & ASSESSMENT — Phase 2 Complete + Month 1 Retrospective",
+  duration:"5–6 hours", phaseLabel:"Phase 2 · Final Assessment",
+  goal:"Cement Phase 2. Build a mini project. Document Month 1 learnings. Plan Month 2.",
+  resources:[{label:"Your notes, days 22–29",url:"#"},{label:"OSTEP free book",url:"https://pages.cs.wisc.edu/~remzi/OSTEP/"}],
+  sections:[
+    {title:"Assessment project",icon:"ti-code",body:`Build a <strong>Process Monitor CLI tool</strong>:
+<ul>
+<li>Reads /proc/[PID]/stat for all PIDs</li>
+<li>Displays: PID, name, CPU%, memory, state in formatted table</li>
+<li>Refreshes every N seconds (configurable via arg)</li>
+<li>Handles SIGTERM for clean exit</li>
+<li>Built with CMake, tested with CTest, formatted with clang-format</li>
+<li>Full CI pipeline in GitHub Actions</li>
+</ul>`},
+    {title:"Month 1 retrospective",icon:"ti-refresh",body:`
+<ul>
+<li>List every skill you can now demonstrate</li>
+<li>Identify your 3 weakest areas from Phases 1–2</li>
+<li>Count: lines of C++ written (target: 3000+ for Month 1)</li>
+<li>GitHub: commits, files, CI passing</li>
+</ul>`},
+    {title:"Month 2 preview",icon:"ti-calendar",body:`<strong>Month 2 covers:</strong>
+<ul>
+<li>Days 31–45: Phase 3 — Operating Systems Deep Dive (OSTEP in full)</li>
+<li>Days 46–60: Phase 4 — Computer Networks (Beej's, TCP/IP, Sockets)</li>
+</ul>
+When you hit your response limit, share this message with me: <em>"I have completed Month 1 (Days 1–30, Phase 1 Modern C++ and Phase 2 Linux). Please generate Month 2 (Days 31–60, Phase 3 OS and Phase 4 Networks) with the same level of daily detail."</em>`},
+    {title:"GitHub milestone",icon:"ti-flag",body:`
+<ul>
+<li>Tag: <code>v2.0-month1-complete</code></li>
+<li>README: Month 1 project portfolio list</li>
+<li>Portfolio projects so far: mini_vector, thread_safe_queue, object_pool, process_monitor</li>
+</ul>`},
+  ],
+  deliverable:"process_monitor tool on GitHub. Month 1 retrospective in RETROSPECTIVE.md. Tag v2.0-month1-complete.",
+  selfTest:"Can you explain fork/exec/wait from memory? Write a signal handler skeleton. Explain what compile_commands.json is and why clang-tidy needs it. What is a zombie process?",
+  mistakes:"Not writing the retrospective. Not tagging milestones. Skipping the Phase 2 project.",
+  revision:"Phase 3 starts Day 31. Re-read OSTEP Ch 4–6 as warm-up on Day 31 morning."
+}
+];
+
+let current=0;
+let phase=0;
+let done=new Set();
+let filtered=DAYS;
+
+function filterPhase(p){
+  phase=p;
+  document.querySelectorAll('.ptab').forEach((t,i)=>t.classList.toggle('active',i===p));
+  filtered=p===0?DAYS:DAYS.filter(d=>d.phase===p);
+  current=0;
+  buildJumpBar();
+  render();
+}
+
+function buildJumpBar(){
+  const bar=document.getElementById('jumpBar');
+  bar.innerHTML='';
+  filtered.forEach((d,i)=>{
+    const b=document.createElement('button');
+    b.textContent=d.day;
+    b.title='Day '+d.day+': '+d.title;
+    if(i===current)b.classList.add('active');
+    if(done.has(d.day))b.classList.add('done');
+    b.onclick=()=>{current=i;buildJumpBar();render();};
+    bar.appendChild(b);
+  });
+}
+
+function go(dir){
+  current=Math.max(0,Math.min(filtered.length-1,current+dir));
+  buildJumpBar();
+  render();
+}
+
+function render(){
+  const d=filtered[current];
+  if(!d)return;
+  document.getElementById('dayBadge').textContent='Day '+d.day+' of '+filtered.length+(phase===0?' (of 30)':'');
+  document.getElementById('prog').style.width=((d.day/30)*100)+'%';
+  const card=document.getElementById('dayCard');
+  card.innerHTML=`
+<div class="day-header">
+  <div class="day-num">Day ${d.day}</div>
+  <h2>${d.title}</h2>
+  <div class="meta">
+    <span class="meta-pill"><i class="ti ti-clock" aria-hidden="true" style="font-size:12px"></i> ${d.duration}</span>
+    <span class="phase-label">${d.phaseLabel}</span>
+  </div>
+</div>
+<div class="sections">
+  <div>
+    <div class="sec-title"><i class="ti ti-target" aria-hidden="true"></i>Goal</div>
+    <div class="sec-body">${d.goal}</div>
+  </div>
+  <div class="section-divider"></div>
+  <div>
+    <div class="sec-title"><i class="ti ti-link" aria-hidden="true"></i>Resources</div>
+    <div class="sec-body"><ul>${d.resources.map(r=>`<li><a class="resource-link" href="${r.url}" target="_blank">${r.label}</a></li>`).join('')}</ul></div>
+  </div>
+  <div class="section-divider"></div>
+  ${d.sections.map(s=>`
+  <div>
+    <div class="sec-title"><i class="ti ${s.icon}" aria-hidden="true"></i>${s.title}</div>
+    <div class="sec-body">${s.body}</div>
+  </div>
+  <div class="section-divider"></div>
+  `).join('')}
+  <div>
+    <div class="sec-title"><i class="ti ti-package" aria-hidden="true"></i>Deliverable</div>
+    <div class="deliverable-box"><p>${d.deliverable}</p></div>
+  </div>
+  <div>
+    <div class="sec-title"><i class="ti ti-brain" aria-hidden="true"></i>End-of-day self-test</div>
+    <div class="self-test"><p>${d.selfTest}</p></div>
+  </div>
+  <div>
+    <div class="sec-title"><i class="ti ti-alert-triangle" aria-hidden="true"></i>Common mistakes</div>
+    <div class="mistake-box"><p>${d.mistakes}</p></div>
+  </div>
+  <div>
+    <div class="sec-title"><i class="ti ti-refresh" aria-hidden="true"></i>Revision requirement</div>
+    <div class="revision-box"><p>${d.revision}</p></div>
+  </div>
+  <div style="padding-top:4px">
+    <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+      <input type="checkbox" ${done.has(d.day)?'checked':''} onchange="markDone(${d.day},this.checked)" style="accent-color:#3C3489;width:16px;height:16px">
+      Mark Day ${d.day} as complete
+    </label>
+  </div>
+</div>`;
+}
+
+function markDone(day,val){
+  if(val)done.add(day);else done.delete(day);
+  buildJumpBar();
+}
+
+buildJumpBar();
+render();
+</script>
